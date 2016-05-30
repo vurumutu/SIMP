@@ -6,6 +6,7 @@
 package simp;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
@@ -42,6 +43,7 @@ public class NewJFrame extends javax.swing.JFrame {
         super("SIMP - Student Image Manipulation Program");
         initComponents();
         gfx = (Graphics2D) jPanel.getGraphics();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     /**
@@ -194,11 +196,13 @@ public class NewJFrame extends javax.swing.JFrame {
 	//otwórz
 	private void menuOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenActionPerformed
     int returnVal = fileOpenChooser.showOpenDialog(this);
+    //setSurfaceSize();
+    //paintComponent(gfx);
     if (returnVal == JFileChooser.APPROVE_OPTION) {
         file = fileOpenChooser.getSelectedFile();
         try {         
             img = ImageIO.read(file);
-            gfx.drawImage(img, 100, 100, null);
+            gfx.drawImage(img, 0, 0, null);
             
 
             for(int i = 0; i < 2048; i++){//konwersja do tablicy
@@ -213,7 +217,17 @@ public class NewJFrame extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_menuOpenActionPerformed
 
-        
+//   public void setSurfaceSize(){
+//        Dimension d = new Dimension();
+//        d.width = img.getWidth(null);
+//        d.height = img.getHeight(null);
+//        setPreferredSize(d);  
+//   }
+//   public void paintComponent(Graphics g) {
+//        //super.paintComponent(g);
+//        Graphics2D g2d = (Graphics2D) g;
+//        g2d.drawImage(img, 0, 0, null);
+//    }     
         
         
     //zapisz
@@ -234,7 +248,7 @@ public class NewJFrame extends javax.swing.JFrame {
     //koniec
     private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {                                           
     //zadne z tych nie dziala, nie wiem czemu
-        System.exit(0);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     //Runtime.getRuntime().exit(0);
     }                                          
     //wyostrz
@@ -243,7 +257,7 @@ public class NewJFrame extends javax.swing.JFrame {
         -1, -1 });
         BufferedImageOp op = new ConvolveOp(kernel);
         img = op.filter(img, null);
-        gfx.drawImage(img, 100, 100, null);
+        gfx.drawImage(img, 0, 0, null);
     }                                          
     //rozmyj
 	private void menuBlurActionPerformed(java.awt.event.ActionEvent evt) {                                           
@@ -310,6 +324,7 @@ public class NewJFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new NewJFrame().setVisible(true);
+                
             }
         });
     }
