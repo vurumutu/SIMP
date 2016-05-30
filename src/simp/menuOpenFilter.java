@@ -14,10 +14,10 @@ import java.io.File;
 public  class menuOpenFilter extends javax.swing.filechooser.FileFilter {
         @Override
         public boolean accept(File file) {
-            return file.isDirectory() || file.getAbsolutePath().endsWith(".bmp");
+            return file.isDirectory() || file.getAbsolutePath().endsWith(".bmp")|| file.getAbsolutePath().endsWith(".jpg")|| file.getAbsolutePath().endsWith(".tif");
         }
         @Override
         public String getDescription() {
-            return "Windows Bitmap (*.bmp)";
+            return "Podstawowe typy obrazów(*.jpg,*.bmp,*.tif)";
         }
     } 
