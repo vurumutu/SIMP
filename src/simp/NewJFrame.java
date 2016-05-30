@@ -9,21 +9,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 
 /**
  *
@@ -43,7 +38,7 @@ public class NewJFrame extends javax.swing.JFrame {
         super("SIMP - Student Image Manipulation Program");
         initComponents();
         gfx = (Graphics2D) jPanel.getGraphics();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     /**
@@ -57,6 +52,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         fileOpenChooser = new javax.swing.JFileChooser();
         fileSaveChooser = new javax.swing.JFileChooser();
+        colorChooser = new javax.swing.JColorChooser();
         jPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -81,6 +77,13 @@ public class NewJFrame extends javax.swing.JFrame {
         fileOpenChooser.setFileFilter(new menuOpenFilter());
 
         fileSaveChooser.setFileFilter(new menuCloseFilter());
+
+        colorChooser.setToolTipText("");
+        colorChooser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                colorChooserMouseExited(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -205,10 +208,10 @@ public class NewJFrame extends javax.swing.JFrame {
             gfx.drawImage(img, 0, 0, null);
             
 
-            for(int i = 0; i < 2048; i++){//konwersja do tablicy
-                for(int j = 0; j < 2048; j++)
-                    imgMatrix[i][j] = img.getRGB(i, j);
-            }
+//            for(int i = 0; i < 2048; i++){//konwersja do tablicy
+//                for(int j = 0; j < 2048; j++)
+//                    imgMatrix[i][j] = img.getRGB(i, j);
+//            }
         } catch (IOException ex) {
           System.out.println("Nie udało się otworzyć pliku."+file.getAbsolutePath());
         }
@@ -244,7 +247,11 @@ public class NewJFrame extends javax.swing.JFrame {
     private void menuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutActionPerformed
             JOptionPane.showMessageDialog(null,"Autorzy :\nWojciech \"Przystojniaczek\" Zgliniecki \nKarol \"Automatyk\" Dworakowski ");
     }//GEN-LAST:event_menuAboutActionPerformed
-	
+
+    private void colorChooserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorChooserMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_colorChooserMouseExited
+
     //koniec
     private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {                                           
     //zadne z tych nie dziala, nie wiem czemu
@@ -322,6 +329,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new NewJFrame().setVisible(true);
                 
@@ -330,6 +338,7 @@ public class NewJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JColorChooser colorChooser;
     private javax.swing.JFileChooser fileOpenChooser;
     private javax.swing.JFileChooser fileSaveChooser;
     private javax.swing.JMenu jMenu1;
