@@ -5,10 +5,9 @@
  */
 package simp;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.BorderLayout;
 import java.awt.Graphics2D;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ConvolveOp;
@@ -28,18 +27,90 @@ import javax.swing.JOptionPane;
 
 
 public class NewJFrame extends javax.swing.JFrame {
-
-    BufferedImage img = null;
-    Graphics2D gfx =null;
-    File file;
+    //private Image image;
+    public BufferedImage img = null;
+    public Graphics2D gfx =null;
+    public File file;
     int [][] imgMatrix = new int[2048][2048];
+    //private int currentX, currentY, oldX, oldY;
+//    private static final int W = 640;
+//    private static final int H = 480;
+//    private Point origin = new Point(W / 2, H / 2);
+//    private Point mousePt;
     
     public NewJFrame() {
-        super("SIMP - Student Image Manipulation Program");
+                super("SIMP - Student Image Manipulation Program");
         initComponents();
+        setLayout(new BorderLayout());
         gfx = (Graphics2D) jPanel.getGraphics();
+        
+//         setDoubleBuffered(false);
+//         addMouseListener(new MouseAdapter() {
+//         public void mousePressed(MouseEvent e) {
+//           // save coord x,y when mouse is pressed
+//           oldX = e.getX();
+//           oldY = e.getY();
+//                 }
+//    });
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
+    @Override
+    public synchronized void addMouseMotionListener(MouseMotionListener l) {
+        super.addMouseMotionListener(l); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+//    public void paintComponent(Graphics g) {
+//
+//        super.paintComponent(g);
+//        Graphics2D g2d = (Graphics2D) g;
+//        g2d.drawImage(g, 0, 0, null);
+//    }
+    
+    
+//    @Override
+//    public Dimension getPreferredSize() {
+//        return new Dimension(W, H);
+//    }
+//
+//    public void paintComponent(Graphics g) {
+//        //super.paintComponent(g);
+//        g.setColor(Color.black);
+//        g.drawLine(0, origin.y, getWidth(), origin.y);
+//        g.drawLine(origin.x, 0, origin.x, getHeight());
+//    }
+
+
+    
+//    @Override
+//    public synchronized void addMouseMotionListener(MouseMotionListener l) {
+//        super.addMouseMotionListener(l); //To change body of generated methods, choose Tools | Templates.
+//        this.addMouseListener(new MouseAdapter());
+//
+//    /**
+//     *
+//     * @param l
+//     */
+//    public void mouseDragged(MouseEvent l) {
+//        // coord x,y when drag mouse
+//        currentX = l.getX();
+//        currentY = l.getY();
+// 
+//        if (gfx != null) {
+//          // draw line if g2 context not null
+//          gfx.drawLine(oldX, oldY, currentX, currentY);
+//          // refresh draw area to repaint
+//          repaint();
+//          // store current coords x,y as olds x,y
+//          oldX = currentX;
+//          oldY = currentY;
+//        }
+//      }
+//}
+        
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -88,12 +159,13 @@ public class NewJFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel.setPreferredSize(new java.awt.Dimension(1080, 720));
 
         javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
         jPanel.setLayout(jPanelLayout);
         jPanelLayout.setHorizontalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 787, Short.MAX_VALUE)
+            .addGap(0, 1080, Short.MAX_VALUE)
         );
         jPanelLayout.setVerticalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,6 +173,16 @@ public class NewJFrame extends javax.swing.JFrame {
         );
 
         jMenu1.setText("Plik");
+        jMenu1.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+                jMenu1MenuCanceled(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+                jMenu1MenuCanceled(evt);
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+            }
+        });
 
         menuOpen.setText("Otwórz");
         menuOpen.addActionListener(new java.awt.event.ActionListener() {
@@ -186,11 +268,13 @@ public class NewJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
 
         pack();
@@ -205,9 +289,10 @@ public class NewJFrame extends javax.swing.JFrame {
         file = fileOpenChooser.getSelectedFile();
         try {         
             img = ImageIO.read(file);
-            gfx.drawImage(img, 0, 0, null);
-            
-
+            int width          = img.getWidth();
+            int height         = img.getHeight(); 
+            gfx.drawImage(img, 0, 0, width, height, null);
+            //repaint();
 //            for(int i = 0; i < 2048; i++){//konwersja do tablicy
 //                for(int j = 0; j < 2048; j++)
 //                    imgMatrix[i][j] = img.getRGB(i, j);
@@ -245,12 +330,16 @@ public class NewJFrame extends javax.swing.JFrame {
 
     //o autorach
     private void menuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutActionPerformed
-            JOptionPane.showMessageDialog(null,"Autorzy :\nWojciech \"Przystojniaczek\" Zgliniecki \nKarol \"Automatyk\" Dworakowski ");
+            JOptionPane.showMessageDialog(null,"Autorzy :\nWojciech Zgliniecki \nKarol Dworakowski ");
     }//GEN-LAST:event_menuAboutActionPerformed
 
     private void colorChooserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorChooserMouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_colorChooserMouseExited
+
+    private void jMenu1MenuCanceled(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenu1MenuCanceled
+        repaint();        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu1MenuCanceled
 
     //koniec
     private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {                                           
@@ -264,7 +353,7 @@ public class NewJFrame extends javax.swing.JFrame {
         -1, -1 });
         BufferedImageOp op = new ConvolveOp(kernel);
         img = op.filter(img, null);
-        gfx.drawImage(img, 0, 0, null);
+        repaint();
     }                                          
     //rozmyj
 	private void menuBlurActionPerformed(java.awt.event.ActionEvent evt) {                                           
