@@ -31,6 +31,11 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Plik"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuDragMouseExited" listener="javax.swing.event.MenuDragMouseListener" parameters="javax.swing.event.MenuDragMouseEvent" handler="menuExited"/>
+            <EventHandler event="menuDeselected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="menuDeselected"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="menuKeyReleased"/>
+          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuOpen">
               <Properties>
@@ -69,6 +74,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Koniec"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuExitActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -81,31 +89,49 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Wyostrz"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuSharpenActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuBlur">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Rozmyj"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuBlurActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuRotateClockwise">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Obr&#xf3;t w prawo o 90 stopni"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuRotateClockwiseActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuRotateCounterClockwise">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Obr&#xf3;t w lewo o 90 stopni"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuRotateCounterClockwiseActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuColorCorrection">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Korekta kolorystyczna"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuColorCorrectionActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuHueSaturation">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Jasno&#x15b;&#x107; i kontrast"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuHueSaturationActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -126,11 +152,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="O&#x142;&#xf3;wek"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPencilActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuClearAll">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Wyczy&#x15b;&#x107; wszystko"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuClearAllActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

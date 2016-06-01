@@ -5,10 +5,9 @@
  */
 package simp;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ConvolveOp;
@@ -17,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 
@@ -30,16 +30,17 @@ import javax.swing.JOptionPane;
 public class NewJFrame extends javax.swing.JFrame {
 
     BufferedImage img = null;
+    int imgHeight = 0;
+    int imgWidth = 0;
     Graphics2D gfx =null;
     File file;
-    int [][] imgMatrix = new int[2048][2048];
+    BufferedImage imgOperations = new BufferedImage(100, 200,BufferedImage.TYPE_BYTE_INDEXED);
     
     public NewJFrame() {
         super("SIMP - Student Image Manipulation Program");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initComponents();
-        gfx = (Graphics2D) jPanel.getGraphics();
-        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+        gfx = (Graphics2D) jPanel.getGraphics();    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -101,6 +102,31 @@ public class NewJFrame extends javax.swing.JFrame {
         );
 
         jMenu1.setText("Plik");
+        jMenu1.addMenuDragMouseListener(new javax.swing.event.MenuDragMouseListener() {
+            public void menuDragMouseDragged(javax.swing.event.MenuDragMouseEvent evt) {
+            }
+            public void menuDragMouseEntered(javax.swing.event.MenuDragMouseEvent evt) {
+            }
+            public void menuDragMouseExited(javax.swing.event.MenuDragMouseEvent evt) {
+                menuExited(evt);
+            }
+            public void menuDragMouseReleased(javax.swing.event.MenuDragMouseEvent evt) {
+            }
+        });
+        jMenu1.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+                NewJFrame.this.menuDeselected(evt);
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+            }
+        });
+        jMenu1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                menuKeyReleased(evt);
+            }
+        });
 
         menuOpen.setText("Otwórz");
         menuOpen.addActionListener(new java.awt.event.ActionListener() {
@@ -136,6 +162,11 @@ public class NewJFrame extends javax.swing.JFrame {
         jMenu1.add(menuAbout);
 
         menuExit.setText("Koniec");
+        menuExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuExitActionPerformed(evt);
+            }
+        });
         jMenu1.add(menuExit);
 
         jMenuBar1.add(jMenu1);
@@ -143,21 +174,51 @@ public class NewJFrame extends javax.swing.JFrame {
         jMenu2.setText("Edytuj");
 
         menuSharpen.setText("Wyostrz");
+        menuSharpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSharpenActionPerformed(evt);
+            }
+        });
         jMenu2.add(menuSharpen);
 
         menuBlur.setText("Rozmyj");
+        menuBlur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBlurActionPerformed(evt);
+            }
+        });
         jMenu2.add(menuBlur);
 
         menuRotateClockwise.setText("Obrót w prawo o 90 stopni");
+        menuRotateClockwise.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRotateClockwiseActionPerformed(evt);
+            }
+        });
         jMenu2.add(menuRotateClockwise);
 
         menuRotateCounterClockwise.setText("Obrót w lewo o 90 stopni");
+        menuRotateCounterClockwise.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRotateCounterClockwiseActionPerformed(evt);
+            }
+        });
         jMenu2.add(menuRotateCounterClockwise);
 
         menuColorCorrection.setText("Korekta kolorystyczna");
+        menuColorCorrection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuColorCorrectionActionPerformed(evt);
+            }
+        });
         jMenu2.add(menuColorCorrection);
 
         menuHueSaturation.setText("Jasność i kontrast");
+        menuHueSaturation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuHueSaturationActionPerformed(evt);
+            }
+        });
         jMenu2.add(menuHueSaturation);
 
         jMenuBar1.add(jMenu2);
@@ -173,9 +234,19 @@ public class NewJFrame extends javax.swing.JFrame {
         jMenu5.add(menuPickColor);
 
         menuPencil.setText("Ołówek");
+        menuPencil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPencilActionPerformed(evt);
+            }
+        });
         jMenu5.add(menuPencil);
 
         menuClearAll.setText("Wyczyść wszystko");
+        menuClearAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuClearAllActionPerformed(evt);
+            }
+        });
         jMenu5.add(menuClearAll);
 
         jMenuBar1.add(jMenu5);
@@ -199,19 +270,11 @@ public class NewJFrame extends javax.swing.JFrame {
 	//otwórz
 	private void menuOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenActionPerformed
     int returnVal = fileOpenChooser.showOpenDialog(this);
-    //setSurfaceSize();
-    //paintComponent(gfx);
     if (returnVal == JFileChooser.APPROVE_OPTION) {
         file = fileOpenChooser.getSelectedFile();
         try {         
             img = ImageIO.read(file);
             gfx.drawImage(img, 0, 0, null);
-            
-
-//            for(int i = 0; i < 2048; i++){//konwersja do tablicy
-//                for(int j = 0; j < 2048; j++)
-//                    imgMatrix[i][j] = img.getRGB(i, j);
-//            }
         } catch (IOException ex) {
           System.out.println("Nie udało się otworzyć pliku."+file.getAbsolutePath());
         }
@@ -219,20 +282,7 @@ public class NewJFrame extends javax.swing.JFrame {
         System.out.println("Anulowano wybór pliku przez użytkownika.");
     }
     }//GEN-LAST:event_menuOpenActionPerformed
-
-//   public void setSurfaceSize(){
-//        Dimension d = new Dimension();
-//        d.width = img.getWidth(null);
-//        d.height = img.getHeight(null);
-//        setPreferredSize(d);  
-//   }
-//   public void paintComponent(Graphics g) {
-//        //super.paintComponent(g);
-//        Graphics2D g2d = (Graphics2D) g;
-//        g2d.drawImage(img, 0, 0, null);
-//    }     
-        
-        
+ 
     //zapisz
     private void menuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSaveActionPerformed
 
@@ -245,60 +295,91 @@ public class NewJFrame extends javax.swing.JFrame {
 
     //o autorach
     private void menuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutActionPerformed
-            JOptionPane.showMessageDialog(null,"Autorzy :\nWojciech \"Przystojniaczek\" Zgliniecki \nKarol \"Automatyk\" Dworakowski ");
+        JOptionPane.showMessageDialog(null,"Autorzy :\nWojciech \"Przystojniaczek\" Zgliniecki \nKarol \"Automatyk\" Dworakowski ");
     }//GEN-LAST:event_menuAboutActionPerformed
 
     private void colorChooserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorChooserMouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_colorChooserMouseExited
 
-    //koniec
-    private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {                                           
-    //zadne z tych nie dziala, nie wiem czemu
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //Runtime.getRuntime().exit(0);
-    }                                          
-    //wyostrz
-	private void menuSharpenActionPerformed(java.awt.event.ActionEvent evt) {                                           
+    private void menuDeselected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuDeselected
+        jPanel.repaint();
+    }//GEN-LAST:event_menuDeselected
+
+    private void menuExited(javax.swing.event.MenuDragMouseEvent evt) {//GEN-FIRST:event_menuExited
+        jPanel.repaint();
+    }//GEN-LAST:event_menuExited
+
+    private void menuKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_menuKeyReleased
+        jPanel.repaint();
+    }//GEN-LAST:event_menuKeyReleased
+
+    private void menuSharpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSharpenActionPerformed
+                imgOperations = img;
         Kernel kernel = new Kernel(3, 3, new float[] { -1, -1, -1, -1, 9, -1, -1,
         -1, -1 });
         BufferedImageOp op = new ConvolveOp(kernel);
+        img = imgOperations;
         img = op.filter(img, null);
         gfx.drawImage(img, 0, 0, null);
-    }                                          
-    //rozmyj
-	private void menuBlurActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-    }                                          
-    //w prawo o 90 stopni
-	private void menuRotateClockwiseActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-    }                                          
-    //w lewo o 90 stopni
-	private void menuRotateCounterClockwiseActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-    }                                          
-    //korekta kolorystyczna
-	private void menuColorCorrectionActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-    }                                          
-    //jasnosc i kontrast
-	private void menuHueSaturationActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-    }                                          
-    //wybierz kolor
-	private void menuPickColorActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-    }                                          
-    //olowek
-	private void menuPencilActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-    }                                          
-    //usun wszystko
-	private void menuClearAllActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-    }                                          
+    }//GEN-LAST:event_menuSharpenActionPerformed
+    
+    private void menuBlurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBlurActionPerformed
+        imgOperations = img;
+        Kernel kernel = new Kernel(3, 3, new float[] { 1f / 9f, 1f / 9f, 1f / 9f,
+        1f / 9f, 1f / 9f, 1f / 9f, 1f / 9f, 1f / 9f, 1f / 9f });
+        BufferedImageOp op = new ConvolveOp(kernel);
+        img=imgOperations;
+        img = op.filter(img, null);
+        gfx.drawImage(img, 0, 0, null);
+    }//GEN-LAST:event_menuBlurActionPerformed
 
+    private void menuRotateClockwiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRotateClockwiseActionPerformed
+        imgOperations = img;
+        AffineTransform tx = new AffineTransform();
+        tx.rotate(Math.PI/2, imgOperations.getWidth() / 2, imgOperations.getHeight() / 2);
+
+        AffineTransformOp op = new AffineTransformOp(tx,AffineTransformOp.TYPE_BILINEAR);
+        img=imgOperations;
+        img = op.filter(img, null);
+        gfx.drawImage(img, 0, 0, null);
+    }//GEN-LAST:event_menuRotateClockwiseActionPerformed
+
+    private void menuRotateCounterClockwiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRotateCounterClockwiseActionPerformed
+        imgOperations = img;
+        AffineTransform tx = new AffineTransform();
+        tx.rotate(-Math.PI/2, imgOperations.getWidth() / 2, imgOperations.getHeight() / 2);
+
+        AffineTransformOp op = new AffineTransformOp(tx,AffineTransformOp.TYPE_BILINEAR);
+        img=imgOperations;
+        img = op.filter(img, null);
+        gfx.drawImage(img, 0, 0, null);
+    }//GEN-LAST:event_menuRotateCounterClockwiseActionPerformed
+
+    private void menuColorCorrectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuColorCorrectionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuColorCorrectionActionPerformed
+
+    private void menuHueSaturationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuHueSaturationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuHueSaturationActionPerformed
+
+    private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_menuExitActionPerformed
+
+    private void menuPencilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPencilActionPerformed
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuPencilActionPerformed
+
+    private void menuClearAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClearAllActionPerformed
+
+    }//GEN-LAST:event_menuClearAllActionPerformed
+
+    private void menuPickColorActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        // TODO add your handling code here:
+    }  
 
     /**
      * @param args the command line arguments
@@ -335,6 +416,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
