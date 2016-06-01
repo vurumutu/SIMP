@@ -6,6 +6,8 @@
 package simp;
 
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -19,13 +21,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-
 /**
  *
  * @author Wojcisz
  */
-
-
 
 public class NewJFrame extends javax.swing.JFrame {
 
@@ -35,6 +34,7 @@ public class NewJFrame extends javax.swing.JFrame {
     Graphics2D gfx =null;
     File file;
     BufferedImage imgOperations = new BufferedImage(100, 200,BufferedImage.TYPE_BYTE_INDEXED);
+    boolean bRefreshing = true;
     
     public NewJFrame() {
         super("SIMP - Student Image Manipulation Program");
@@ -120,6 +120,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 NewJFrame.this.menuDeselected(evt);
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
+                MenuSelected(evt);
             }
         });
         jMenu1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -172,6 +173,30 @@ public class NewJFrame extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edytuj");
+        jMenu2.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+            public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
+            }
+            public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
+                menu2KeyReleased(evt);
+            }
+            public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
+            }
+        });
+        jMenu2.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+                NewJFrame.this.menuDeselected(evt);
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                menu2Selected(evt);
+            }
+        });
+        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menu2Exited(evt);
+            }
+        });
 
         menuSharpen.setText("Wyostrz");
         menuSharpen.addActionListener(new java.awt.event.ActionListener() {
@@ -224,6 +249,30 @@ public class NewJFrame extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu5.setText("Rysuj");
+        jMenu5.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+            public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
+            }
+            public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
+                menu3KeyReleased(evt);
+            }
+            public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
+            }
+        });
+        jMenu5.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+                menu3Deselected(evt);
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                menu3Selected(evt);
+            }
+        });
+        jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menu3Exited(evt);
+            }
+        });
 
         menuPickColor.setText("Wybierz kolor");
         menuPickColor.addActionListener(new java.awt.event.ActionListener() {
@@ -267,52 +316,49 @@ public class NewJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 	
-	//otwórz
+	
 	private void menuOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenActionPerformed
-    int returnVal = fileOpenChooser.showOpenDialog(this);
-    if (returnVal == JFileChooser.APPROVE_OPTION) {
-        file = fileOpenChooser.getSelectedFile();
-        try {         
-            img = ImageIO.read(file);
-            gfx.drawImage(img, 0, 0, null);
-        } catch (IOException ex) {
-          System.out.println("Nie udało się otworzyć pliku."+file.getAbsolutePath());
-        }
-    } else {
-        System.out.println("Anulowano wybór pliku przez użytkownika.");
-    }
+            int returnVal = fileOpenChooser.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                file = fileOpenChooser.getSelectedFile();
+                try {         
+                    img = ImageIO.read(file);
+                    gfx.drawImage(img, 0, 0, null);
+                    int timerTimeInMilliSeconds = 20;
+                    javax.swing.Timer timer = new javax.swing.Timer(timerTimeInMilliSeconds, new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        if(bRefreshing){
+                            gfx.drawImage(img, 0, 0, null);
+                        }
+                    }
+                    });
+                    timer.start();
+
+                } 
+                catch (IOException ex) {
+                    System.out.println("Nie udało się otworzyć pliku."+file.getAbsolutePath());
+                }
+            } 
+            else {
+                System.out.println("Anulowano wybór pliku przez użytkownika.");
+            }
     }//GEN-LAST:event_menuOpenActionPerformed
  
-    //zapisz
     private void menuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSaveActionPerformed
 
     }//GEN-LAST:event_menuSaveActionPerformed
 
-    //zapisz jako
     private void menuSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
 
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
-    //o autorach
     private void menuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutActionPerformed
         JOptionPane.showMessageDialog(null,"Autorzy :\nWojciech \"Przystojniaczek\" Zgliniecki \nKarol \"Automatyk\" Dworakowski ");
     }//GEN-LAST:event_menuAboutActionPerformed
 
     private void colorChooserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorChooserMouseExited
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_colorChooserMouseExited
-
-    private void menuDeselected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuDeselected
-        jPanel.repaint();
-    }//GEN-LAST:event_menuDeselected
-
-    private void menuExited(javax.swing.event.MenuDragMouseEvent evt) {//GEN-FIRST:event_menuExited
-        jPanel.repaint();
-    }//GEN-LAST:event_menuExited
-
-    private void menuKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_menuKeyReleased
-        jPanel.repaint();
-    }//GEN-LAST:event_menuKeyReleased
 
     private void menuSharpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSharpenActionPerformed
                 imgOperations = img;
@@ -357,11 +403,11 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menuRotateCounterClockwiseActionPerformed
 
     private void menuColorCorrectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuColorCorrectionActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_menuColorCorrectionActionPerformed
 
     private void menuHueSaturationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuHueSaturationActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_menuHueSaturationActionPerformed
 
     private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
@@ -370,16 +416,62 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void menuPencilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPencilActionPerformed
 
-        // TODO add your handling code here:
     }//GEN-LAST:event_menuPencilActionPerformed
 
     private void menuClearAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClearAllActionPerformed
 
     }//GEN-LAST:event_menuClearAllActionPerformed
-
-    private void menuPickColorActionPerformed(java.awt.event.ActionEvent evt) {                                             
+	
+	private void menuPickColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPickColorActionPerformed                                          
         // TODO add your handling code here:
-    }  
+    }//GEN-LAST:event_menuPickColorActionPerformed  
+
+	//ta litania poleceń służy do zapewnienia odpowiedniego odświeżania
+	private void menuDeselected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuDeselected
+        bRefreshing=true;
+    }//GEN-LAST:event_menuDeselected
+
+    private void menuExited(javax.swing.event.MenuDragMouseEvent evt) {//GEN-FIRST:event_menuExited
+        bRefreshing=true;
+    }//GEN-LAST:event_menuExited
+
+    private void menuKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_menuKeyReleased
+        bRefreshing=true;
+    }//GEN-LAST:event_menuKeyReleased
+
+    private void menu2KeyReleased(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_menu2KeyReleased
+        bRefreshing=true;
+    }//GEN-LAST:event_menu2KeyReleased
+
+    private void menu2Exited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu2Exited
+        bRefreshing=true;
+    }//GEN-LAST:event_menu2Exited
+
+    private void menu3Exited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu3Exited
+        bRefreshing=true;
+    }//GEN-LAST:event_menu3Exited
+
+    private void menu3KeyReleased(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_menu3KeyReleased
+        bRefreshing=true;
+    }//GEN-LAST:event_menu3KeyReleased
+
+    private void menu3Deselected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menu3Deselected
+        bRefreshing=true;
+    }//GEN-LAST:event_menu3Deselected
+	
+	private void MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_MenuSelected
+        bRefreshing=false;
+    }//GEN-LAST:event_MenuSelected
+
+    private void menu2Selected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menu2Selected
+        bRefreshing=false;
+    }//GEN-LAST:event_menu2Selected
+
+    private void menu3Selected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menu3Selected
+        bRefreshing=false;
+    }//GEN-LAST:event_menu3Selected
+	
+	//koniec litanii
 
     /**
      * @param args the command line arguments
@@ -416,6 +508,8 @@ public class NewJFrame extends javax.swing.JFrame {
                 
             }
         });
+       
+      
         
     }
 
