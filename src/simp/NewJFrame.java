@@ -5,12 +5,12 @@
  */
 package simp;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -20,10 +20,9 @@ import java.awt.image.Kernel;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 /**
  *
  * @author Wojcisz
@@ -393,11 +392,15 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menuRotateCounterClockwiseActionPerformed
 
     private void menuColorCorrectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuColorCorrectionActionPerformed
-       
+        Color currentColor=gfx.getColor();
+        Color change = JColorChooser.showDialog(null, "Wybór koloru Ołówka", currentColor);
+        gfx.setColor(change);
     }//GEN-LAST:event_menuColorCorrectionActionPerformed
 
     private void menuHueSaturationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuHueSaturationActionPerformed
-        
+        Color currentColor=gfx.getColor();
+        Color change = JColorChooser.showDialog(null, "Wybór koloru Ołówka", currentColor);
+        gfx.setColor(change);
     }//GEN-LAST:event_menuHueSaturationActionPerformed
 
     private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
@@ -415,7 +418,9 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menuClearAllActionPerformed
 	
     private void menuPickColorActionPerformed(java.awt.event.ActionEvent evt) {                                                                                        
-        
+        Color currentColor=gfx.getColor();
+        Color change = JColorChooser.showDialog(null, "Wybór koloru Ołówka", currentColor);
+        gfx.setColor(change);
     }                                               
 
     //ta litania poleceń służy do zapewnienia odpowiedniego odświeżania
