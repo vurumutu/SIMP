@@ -6,6 +6,7 @@
 package simp;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,30 +31,56 @@ import javax.swing.JOptionPane;
 
 public class NewJFrame extends javax.swing.JFrame {
 
-    BufferedImage img = null;
-    int imgHeight = 0;
-    int imgWidth = 0;
+    int imgHeight = 300;
+    int imgWidth = 300;
+    BufferedImage img = new BufferedImage(imgWidth,imgHeight,BufferedImage.TYPE_INT_ARGB );
     Graphics2D gfx =null;
     File file;
     BufferedImage imgOperations = new BufferedImage(100, 200,BufferedImage.TYPE_BYTE_INDEXED);
     boolean bRefreshing = true;
-    boolean enteredFirst,enteredSecond,enteredThird=false;
     boolean drawable =false;
+
       
     public NewJFrame() {
         super("SIMP - Student Image Manipulation Program");
         initComponents();
-        gfx = (Graphics2D) jPanel.getGraphics(); 
+        gfx = (Graphics2D) jPanel.getGraphics();
         jPanel.addMouseListener(new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
-        if(drawable){
-        int x = e.getX();
-        int y = e.getY();
-        gfx.fillOval(x, y, 3, 3);
+        if(drawable ){
+            int x = e.getX();
+            int y = e.getY();
+            
+            for(int i = 0;i<3;i++){
+                for(int j = 0;j<3;j++){
+                if(((x+1)<imgWidth) && ((y+1)<imgHeight)){
+                    if((x>0)&&(y>0)){
+                    Color drawableColor = gfx.getColor();
+                    int colorInt = drawableColor.getRGB();
+                    img.setRGB(x-1+i, y-1+j, colorInt );
+                    }
+                }
+            }
         }
      }
-  });
+  }});
+//        imgWidth=img.getWidth();
+//        imgHeight=img.getHeight();
+//        Dimension d = new Dimension(imgWidth,imgHeight);
+//        jPanel.setSize(d);
+//        gfx.drawImage(img, 0, 0, null);
+
+        
+        int timerTimeInMilliSeconds = 10;
+        javax.swing.Timer timer = new javax.swing.Timer(timerTimeInMilliSeconds, new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if(bRefreshing){
+                gfx.drawImage(img, 0, 0, null);
+            }
+        }
+        });
+        timer.start();
     }
 
     /**
@@ -108,7 +135,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel.setLayout(jPanelLayout);
         jPanelLayout.setHorizontalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 787, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
         );
         jPanelLayout.setVerticalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,17 +343,11 @@ public class NewJFrame extends javax.swing.JFrame {
                 file = fileOpenChooser.getSelectedFile();
                 try {         
                     img = ImageIO.read(file);
+                    imgHeight = img.getHeight();
+                    imgWidth = img.getWidth();
+                    Dimension d = new Dimension(imgWidth,imgHeight);
+                    jPanel.setSize(d);
                     gfx.drawImage(img, 0, 0, null);
-                    int timerTimeInMilliSeconds = 10;
-                    javax.swing.Timer timer = new javax.swing.Timer(timerTimeInMilliSeconds, new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        if(bRefreshing){
-                            gfx.drawImage(img, 0, 0, null);
-                        }
-                    }
-                    });
-                    timer.start();
-
                 } 
                 catch (IOException ex) {
                     System.out.println("Nie udało się otworzyć pliku."+file.getAbsolutePath());
@@ -412,9 +433,13 @@ public class NewJFrame extends javax.swing.JFrame {
 	}//GEN-LAST:event_menuPencilActionPerformed
 
     private void menuClearAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClearAllActionPerformed
-        bRefreshing=false;
         jPanel.removeAll();
         jPanel.updateUI();
+        imgHeight = 300;
+        imgWidth = 300;
+        img = new BufferedImage(imgWidth,imgHeight,BufferedImage.TYPE_INT_ARGB );
+        Dimension d = new Dimension(imgWidth,imgHeight);
+        jPanel.setSize(d);
     }//GEN-LAST:event_menuClearAllActionPerformed
 	
     private void menuPickColorActionPerformed(java.awt.event.ActionEvent evt) {                                                                                        
@@ -449,17 +474,14 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menu3Deselected
 
 	private void MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_MenuSelected
-         enteredFirst=true;
-         bRefreshing=false;
+        bRefreshing=false;
     }//GEN-LAST:event_MenuSelected
 
     private void menu2Selected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menu2Selected
-        enteredSecond=true;
         bRefreshing=false;
     }//GEN-LAST:event_menu2Selected
 
     private void menu3Selected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menu3Selected
-       enteredThird=true;
         bRefreshing=false;
     }//GEN-LAST:event_menu3Selected
     //koniec litanii
@@ -498,10 +520,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 new NewJFrame().setVisible(true);
                 
             }
-        });
-       
-      
-        
+        });  
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
