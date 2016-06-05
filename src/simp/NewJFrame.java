@@ -33,6 +33,8 @@ public class NewJFrame extends javax.swing.JFrame {
 
     int imgHeight = 300;
     int imgWidth = 300;
+    String fileName;
+    String path;
     BufferedImage img = new BufferedImage(imgWidth,imgHeight,BufferedImage.TYPE_INT_ARGB );
     Graphics2D gfx =null;
     File file;
@@ -341,6 +343,8 @@ public class NewJFrame extends javax.swing.JFrame {
             int returnVal = fileOpenChooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 file = fileOpenChooser.getSelectedFile();
+                fileName = fileOpenChooser.getName(file);
+                path = file.getAbsolutePath();
                 try {         
                     img = ImageIO.read(file);
                     imgHeight = img.getHeight();
@@ -350,7 +354,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     gfx.drawImage(img, 0, 0, null);
                 } 
                 catch (IOException ex) {
-                    System.out.println("Nie udało się otworzyć pliku."+file.getAbsolutePath());
+                    System.out.println("Nie udało się otworzyć pliku." + path);
                 }
             } 
             else {
@@ -359,7 +363,34 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menuOpenActionPerformed
  
     private void menuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSaveActionPerformed
+        String fileExtension = "PNG"; // default png
+        // get file extension
+        int i = fileName.lastIndexOf('.');
+        if (i > 0) {
+            fileExtension = fileName.substring(i+1);
+        }
+        //int returnVal = fileSaveChooser.showSaveDialog(this);
+            
+          
+                //fileSaveChooser.setSelectedFile(file);
+                //String path = fileSaveChooser.
+                try {
+                    //File file = fileSaveChooser.getSelectedFile();
+                    ImageIO.write(img, fileExtension, new File(path)); // cos nie takz path
+                } 
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                    System.out.println("Nie udało się zapisać pliku.");
+                } 
 
+        
+        
+//        try{
+//           ImageIO.write(img, fileExtension, new File(path)); 
+//        }
+//        catch(IOException e){
+//            e.printStackTrace();
+//        }
     }//GEN-LAST:event_menuSaveActionPerformed
 
     private void menuSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
