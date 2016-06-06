@@ -33,6 +33,8 @@ public class NewJFrame extends javax.swing.JFrame {
 
     int imgHeight = 300;
     int imgWidth = 300;
+    String fileName;
+    String path;
     BufferedImage img = new BufferedImage(imgWidth,imgHeight,BufferedImage.TYPE_INT_ARGB );
     Graphics2D gfx =null;
     File file;
@@ -40,7 +42,6 @@ public class NewJFrame extends javax.swing.JFrame {
     boolean bRefreshing = true;
     boolean drawable =false;
 
-      
     public NewJFrame() {
         super("SIMP - Student Image Manipulation Program");
         initComponents();
@@ -64,14 +65,7 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         }
      }
-  }});
-//        imgWidth=img.getWidth();
-//        imgHeight=img.getHeight();
-//        Dimension d = new Dimension(imgWidth,imgHeight);
-//        jPanel.setSize(d);
-//        gfx.drawImage(img, 0, 0, null);
-
-        
+  }});     
         int timerTimeInMilliSeconds = 10;
         javax.swing.Timer timer = new javax.swing.Timer(timerTimeInMilliSeconds, new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -93,14 +87,12 @@ public class NewJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         fileOpenChooser = new javax.swing.JFileChooser();
-        fileSaveChooser = new javax.swing.JFileChooser();
         colorChooser = new javax.swing.JColorChooser();
         jPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuOpen = new javax.swing.JMenuItem();
         menuSave = new javax.swing.JMenuItem();
-        menuSaveAs = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenuItem();
         menuExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -118,14 +110,7 @@ public class NewJFrame extends javax.swing.JFrame {
         fileOpenChooser.setDialogTitle("Wybierz obrazek");
         fileOpenChooser.setFileFilter(new menuOpenFilter());
 
-        fileSaveChooser.setFileFilter(new menuCloseFilter());
-
         colorChooser.setToolTipText("");
-        colorChooser.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                colorChooserMouseExited(evt);
-            }
-        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -175,14 +160,6 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(menuSave);
-
-        menuSaveAs.setText("Zapisz jako");
-        menuSaveAs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuSaveAsActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuSaveAs);
 
         menuAbout.setText("O autorach");
         menuAbout.addActionListener(new java.awt.event.ActionListener() {
@@ -341,6 +318,8 @@ public class NewJFrame extends javax.swing.JFrame {
             int returnVal = fileOpenChooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 file = fileOpenChooser.getSelectedFile();
+                fileName = fileOpenChooser.getName(file);
+                path = file.getAbsolutePath();
                 try {         
                     img = ImageIO.read(file);
                     imgHeight = img.getHeight();
@@ -348,34 +327,40 @@ public class NewJFrame extends javax.swing.JFrame {
                     Dimension d = new Dimension(imgWidth,imgHeight);
                     jPanel.setSize(d);
                     gfx.drawImage(img, 0, 0, null);
+                    System.out.println("Otworzono plik: "+path);
                 } 
                 catch (IOException ex) {
-                    System.out.println("Nie udało się otworzyć pliku."+file.getAbsolutePath());
+                    System.out.println("Nie udało się otworzyć pliku."+path);
                 }
             } 
             else {
-                System.out.println("Anulowano wybór pliku przez użytkownika.");
+                    System.out.println("Anulowano wybór pliku przez użytkownika.");
             }
     }//GEN-LAST:event_menuOpenActionPerformed
  
     private void menuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSaveActionPerformed
-
+        String fileExtension = "BMP"; // default png
+        // get file extension
+        int i = fileName.lastIndexOf('.');
+        if (i > 0) {
+            fileExtension = fileName.substring(i+1);
+        }
+                try {
+                    ImageIO.write(img, fileExtension, new File(path));
+                    System.out.println("Zapisano plik: "+path);
+                } 
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                    System.out.println("Nie udało się zapisać pliku.");
+                } 
     }//GEN-LAST:event_menuSaveActionPerformed
 
-    private void menuSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-
-    }//GEN-LAST:event_jMenuItem12ActionPerformed
-
     private void menuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutActionPerformed
-        JOptionPane.showMessageDialog(null,"Autorzy :\nWojciech \"Przystojniaczek\" Zgliniecki \nKarol \"Automatyk\" Dworakowski ");
+        JOptionPane.showMessageDialog(null,"Autorzy :\nWojciech Zgliniecki\nKarol Dworakowski ");
     }//GEN-LAST:event_menuAboutActionPerformed
 
-    private void colorChooserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorChooserMouseExited
-
-    }//GEN-LAST:event_colorChooserMouseExited
-
     private void menuSharpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSharpenActionPerformed
-                imgOperations = img;
+        imgOperations = img;
         Kernel kernel = new Kernel(3, 3, new float[] { -1, -1, -1, -1, 9, -1, -1,
         -1, -1 });
         BufferedImageOp op = new ConvolveOp(kernel);
@@ -413,15 +398,11 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menuRotateCounterClockwiseActionPerformed
 
     private void menuColorCorrectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuColorCorrectionActionPerformed
-        Color currentColor=gfx.getColor();
-        Color change = JColorChooser.showDialog(null, "Wybór koloru Ołówka", currentColor);
-        gfx.setColor(change);
+
     }//GEN-LAST:event_menuColorCorrectionActionPerformed
 
     private void menuHueSaturationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuHueSaturationActionPerformed
-        Color currentColor=gfx.getColor();
-        Color change = JColorChooser.showDialog(null, "Wybór koloru Ołówka", currentColor);
-        gfx.setColor(change);
+
     }//GEN-LAST:event_menuHueSaturationActionPerformed
 
     private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
@@ -526,7 +507,6 @@ public class NewJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JColorChooser colorChooser;
     private javax.swing.JFileChooser fileOpenChooser;
-    private javax.swing.JFileChooser fileSaveChooser;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu5;
@@ -544,7 +524,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuRotateClockwise;
     private javax.swing.JMenuItem menuRotateCounterClockwise;
     private javax.swing.JMenuItem menuSave;
-    private javax.swing.JMenuItem menuSaveAs;
     private javax.swing.JMenuItem menuSharpen;
     // End of variables declaration//GEN-END:variables
 }
