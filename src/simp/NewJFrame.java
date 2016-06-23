@@ -399,6 +399,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void menuColorCorrectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuColorCorrectionActionPerformed
 
+        //zapisywanie do macierzy i obrobka tejze, nie musimy tego robic na macierzach tak w sumie
+        int[][] pixels = new int[imgHeight+1][imgWidth+1];
+
+        for( int i = 0; i < imgHeight; i++ )
+            for( int j = 0; j < imgWidth; j++ )
+                pixels[i][j] = img.getRGB( i, j );
     }//GEN-LAST:event_menuColorCorrectionActionPerformed
 
     private void menuHueSaturationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuHueSaturationActionPerformed
