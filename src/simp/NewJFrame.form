@@ -10,20 +10,10 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFileChooser" name="fileSaveChooser">
-      <Properties>
-        <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new menuCloseFilter()" type="code"/>
-        </Property>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JColorChooser" name="colorChooser">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
-      <Events>
-        <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="colorChooserMouseExited"/>
-      </Events>
     </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
@@ -52,14 +42,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuSaveActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuSaveAs">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Zapisz jako"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuSaveAsActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuAbout">
@@ -122,20 +104,44 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuRotateCounterClockwiseActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuColorCorrection">
+            <MenuItem class="javax.swing.JMenuItem" name="menuLighten">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Korekta kolorystyczna"/>
+                <Property name="text" type="java.lang.String" value="Rozja&#x15b;nij"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuColorCorrectionActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuLightenActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuHueSaturation">
+            <MenuItem class="javax.swing.JMenuItem" name="menuDim">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Jasno&#x15b;&#x107; i kontrast"/>
+                <Property name="text" type="java.lang.String" value="Przyciemnij"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuHueSaturationActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuDimActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuCorrR">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Korekta R"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuCorrRActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuCorrG">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Korekta G"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuCorrGActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuCorrB">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Korekta B"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuCorrBActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

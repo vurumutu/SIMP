@@ -35,16 +35,20 @@ public class NewJFrame extends javax.swing.JFrame {
     int imgWidth = 300;
     String fileName;
     String path;
-    BufferedImage img = new BufferedImage(imgWidth,imgHeight,BufferedImage.TYPE_INT_ARGB );
+    BufferedImage img = new BufferedImage(imgWidth,imgHeight,BufferedImage.TYPE_INT_RGB);
     Graphics2D gfx =null;
     File file;
     BufferedImage imgOperations = new BufferedImage(100, 200,BufferedImage.TYPE_BYTE_INDEXED);
     boolean bRefreshing = true;
     boolean drawable =false;
 
-      
     public NewJFrame() {
         super("SIMP - Student Image Manipulation Program");
+        for (int x = 0; x < img.getWidth(); x++) { // biale tlo
+            for (int y = 0; y < img.getHeight(); y++) {
+            img.setRGB(x, y, 0xffffff);
+            }
+        }
         initComponents();
         gfx = (Graphics2D) jPanel.getGraphics();
         jPanel.addMouseListener(new MouseAdapter() {
@@ -66,14 +70,7 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         }
      }
-  }});
-//        imgWidth=img.getWidth();
-//        imgHeight=img.getHeight();
-//        Dimension d = new Dimension(imgWidth,imgHeight);
-//        jPanel.setSize(d);
-//        gfx.drawImage(img, 0, 0, null);
-
-        
+  }});     
         int timerTimeInMilliSeconds = 10;
         javax.swing.Timer timer = new javax.swing.Timer(timerTimeInMilliSeconds, new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -85,6 +82,7 @@ public class NewJFrame extends javax.swing.JFrame {
         timer.start();
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -95,14 +93,12 @@ public class NewJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         fileOpenChooser = new javax.swing.JFileChooser();
-        fileSaveChooser = new javax.swing.JFileChooser();
         colorChooser = new javax.swing.JColorChooser();
         jPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuOpen = new javax.swing.JMenuItem();
         menuSave = new javax.swing.JMenuItem();
-        menuSaveAs = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenuItem();
         menuExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -110,8 +106,11 @@ public class NewJFrame extends javax.swing.JFrame {
         menuBlur = new javax.swing.JMenuItem();
         menuRotateClockwise = new javax.swing.JMenuItem();
         menuRotateCounterClockwise = new javax.swing.JMenuItem();
-        menuColorCorrection = new javax.swing.JMenuItem();
-        menuHueSaturation = new javax.swing.JMenuItem();
+        menuLighten = new javax.swing.JMenuItem();
+        menuDim = new javax.swing.JMenuItem();
+        menuCorrR = new javax.swing.JMenuItem();
+        menuCorrG = new javax.swing.JMenuItem();
+        menuCorrB = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         menuPickColor = new javax.swing.JMenuItem();
         menuPencil = new javax.swing.JMenuItem();
@@ -120,14 +119,7 @@ public class NewJFrame extends javax.swing.JFrame {
         fileOpenChooser.setDialogTitle("Wybierz obrazek");
         fileOpenChooser.setFileFilter(new menuOpenFilter());
 
-        fileSaveChooser.setFileFilter(new menuCloseFilter());
-
         colorChooser.setToolTipText("");
-        colorChooser.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                colorChooserMouseExited(evt);
-            }
-        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -177,14 +169,6 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(menuSave);
-
-        menuSaveAs.setText("Zapisz jako");
-        menuSaveAs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuSaveAsActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuSaveAs);
 
         menuAbout.setText("O autorach");
         menuAbout.addActionListener(new java.awt.event.ActionListener() {
@@ -257,21 +241,45 @@ public class NewJFrame extends javax.swing.JFrame {
         });
         jMenu2.add(menuRotateCounterClockwise);
 
-        menuColorCorrection.setText("Korekta kolorystyczna");
-        menuColorCorrection.addActionListener(new java.awt.event.ActionListener() {
+        menuLighten.setText("Rozjaśnij");
+        menuLighten.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuColorCorrectionActionPerformed(evt);
+                menuLightenActionPerformed(evt);
             }
         });
-        jMenu2.add(menuColorCorrection);
+        jMenu2.add(menuLighten);
 
-        menuHueSaturation.setText("Jasność i kontrast");
-        menuHueSaturation.addActionListener(new java.awt.event.ActionListener() {
+        menuDim.setText("Przyciemnij");
+        menuDim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuHueSaturationActionPerformed(evt);
+                menuDimActionPerformed(evt);
             }
         });
-        jMenu2.add(menuHueSaturation);
+        jMenu2.add(menuDim);
+
+        menuCorrR.setText("Korekta R");
+        menuCorrR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCorrRActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuCorrR);
+
+        menuCorrG.setText("Korekta G");
+        menuCorrG.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCorrGActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuCorrG);
+
+        menuCorrB.setText("Korekta B");
+        menuCorrB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCorrBActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuCorrB);
 
         jMenuBar1.add(jMenu2);
 
@@ -352,61 +360,45 @@ public class NewJFrame extends javax.swing.JFrame {
                     Dimension d = new Dimension(imgWidth,imgHeight);
                     jPanel.setSize(d);
                     gfx.drawImage(img, 0, 0, null);
+                    System.out.println("Otworzono plik: "+path);
                 } 
                 catch (IOException ex) {
+
                     System.out.println("Nie udało się otworzyć pliku." + path);
+
                 }
             } 
             else {
-                System.out.println("Anulowano wybór pliku przez użytkownika.");
+                    System.out.println("Anulowano wybór pliku przez użytkownika.");
             }
     }//GEN-LAST:event_menuOpenActionPerformed
  
     private void menuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSaveActionPerformed
-        String fileExtension = "PNG"; // default png
+
+        String fileExtension = "BMP"; // default png
+
         // get file extension
         int i = fileName.lastIndexOf('.');
         if (i > 0) {
             fileExtension = fileName.substring(i+1);
         }
-        //int returnVal = fileSaveChooser.showSaveDialog(this);
-            
-          
-                //fileSaveChooser.setSelectedFile(file);
-                //String path = fileSaveChooser.
                 try {
-                    //File file = fileSaveChooser.getSelectedFile();
-                    ImageIO.write(img, fileExtension, new File(path)); // cos nie takz path
+                    ImageIO.write(img, fileExtension, new File(path));
+                    System.out.println("Zapisano plik: " + path);
+
                 } 
                 catch (IOException ex) {
                     ex.printStackTrace();
                     System.out.println("Nie udało się zapisać pliku.");
                 } 
-
-        
-        
-//        try{
-//           ImageIO.write(img, fileExtension, new File(path)); 
-//        }
-//        catch(IOException e){
-//            e.printStackTrace();
-//        }
     }//GEN-LAST:event_menuSaveActionPerformed
 
-    private void menuSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-
-    }//GEN-LAST:event_jMenuItem12ActionPerformed
-
     private void menuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutActionPerformed
-        JOptionPane.showMessageDialog(null,"Autorzy :\nWojciech \"Przystojniaczek\" Zgliniecki \nKarol \"Automatyk\" Dworakowski ");
+        JOptionPane.showMessageDialog(null,"Autorzy :\nWojciech Zgliniecki\nKarol Dworakowski ");
     }//GEN-LAST:event_menuAboutActionPerformed
 
-    private void colorChooserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorChooserMouseExited
-
-    }//GEN-LAST:event_colorChooserMouseExited
-
     private void menuSharpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSharpenActionPerformed
-                imgOperations = img;
+        imgOperations = img;
         Kernel kernel = new Kernel(3, 3, new float[] { -1, -1, -1, -1, 9, -1, -1,
         -1, -1 });
         BufferedImageOp op = new ConvolveOp(kernel);
@@ -443,17 +435,57 @@ public class NewJFrame extends javax.swing.JFrame {
         img = op.filter(img, null);
     }//GEN-LAST:event_menuRotateCounterClockwiseActionPerformed
 
-    private void menuColorCorrectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuColorCorrectionActionPerformed
-        Color currentColor=gfx.getColor();
-        Color change = JColorChooser.showDialog(null, "Wybór koloru Ołówka", currentColor);
-        gfx.setColor(change);
-    }//GEN-LAST:event_menuColorCorrectionActionPerformed
 
-    private void menuHueSaturationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuHueSaturationActionPerformed
-        Color currentColor=gfx.getColor();
-        Color change = JColorChooser.showDialog(null, "Wybór koloru Ołówka", currentColor);
-        gfx.setColor(change);
-    }//GEN-LAST:event_menuHueSaturationActionPerformed
+    
+    
+    
+    
+    private void menuLightenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLightenActionPerformed
+        // rozjasnianie
+        int blue = 0;
+        int green = 0;
+        int red = 0;
+        int alpha = 0;
+        int color = 0;
+        
+        for( int i = 0; i < img.getHeight()-1; i++ )
+            for( int j = 0; j < img.getWidth()-1; j++ ){
+                color = img.getRGB(i, j); // dostajemy kolor w postaci 32 bitowej liczby ze znakiem
+                // pierwsze 8 bitow to B, kolejne G itd.
+                // bierzemy poszczegolne kolory
+                blue = color & 0xff;
+                green = (color & 0xff00) >> 8;
+                red = (color & 0xff0000) >> 16;
+                alpha = (color & 0xff000000) >>> 24; // >>> ze wzgledu na znak ?? #stackoverflow
+                // tutaj robimy operacje na kolorach
+                
+                   if (red < 3 && red != 0) {
+                     red = 3;
+                   } else {
+                     red = (int) (red / 0.7);
+                     red = (red > 255) ? 255 : red;
+                   }
+
+                   if (blue< 3 && blue!= 0) {
+                     blue= 3;
+                   } else {
+                     blue= (int) (blue/ 0.7);
+                     blue= (blue> 255) ? 255 : blue;
+                   }
+
+                   if (green< 3 && green!= 0) {
+                     green= 3;
+                   } else {
+                     green= (int) (green/ 0.7);
+                     green= (green> 255) ? 255 : green;
+                   }
+                color = blue | green << 8 | red << 16 | alpha << 24; // skladamy kolor do kupy
+                img.setRGB(i, j, color);
+            }
+        //bRefreshing = true;
+        //trzeba tylko raz go narysowac
+        gfx.drawImage(img, 0, 0, null);
+    }//GEN-LAST:event_menuLightenActionPerformed
 
     private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
         System.exit(0);
@@ -468,7 +500,12 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel.updateUI();
         imgHeight = 300;
         imgWidth = 300;
-        img = new BufferedImage(imgWidth,imgHeight,BufferedImage.TYPE_INT_ARGB );
+        img = new BufferedImage(imgWidth,imgHeight,BufferedImage.TYPE_INT_RGB );
+                for (int x = 0; x < img.getWidth(); x++) { // biale tlo
+            for (int y = 0; y < img.getHeight(); y++) {
+            img.setRGB(x, y, 0xffffff);
+            }
+        }
         Dimension d = new Dimension(imgWidth,imgHeight);
         jPanel.setSize(d);
     }//GEN-LAST:event_menuClearAllActionPerformed
@@ -515,6 +552,123 @@ public class NewJFrame extends javax.swing.JFrame {
     private void menu3Selected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menu3Selected
         bRefreshing=false;
     }//GEN-LAST:event_menu3Selected
+
+    private void menuDimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDimActionPerformed
+
+        int blue = 0;
+        int green = 0;
+        int red = 0;
+        int alpha = 0;
+        int color = 0;
+        
+        for( int i = 0; i < img.getHeight()-1; i++ )
+            for( int j = 0; j < img.getWidth()-1; j++ ){
+                color = img.getRGB(i, j); // dostajemy kolor w postaci 32 bitowej liczby ze znakiem
+                // pierwsze 8 bitow to B, kolejne G itd.
+                // bierzemy poszczegolne kolory
+                blue = color & 0xff;
+                green = (color & 0xff00) >> 8;
+                red = (color & 0xff0000) >> 16;
+                alpha = (color & 0xff000000) >>> 24; // >>> ze wzgledu na znak ?? #stackoverflow
+                // tutaj robimy operacje na kolorach
+                blue= (int) (blue* 0.7);
+                green= (int) (green* 0.7);
+                red= (int) (red* 0.7);
+                
+                color = blue | green << 8 | red << 16 | alpha << 24; // skladamy kolor do kupy
+                img.setRGB(i, j, color);
+            }
+        //bRefreshing = true;
+        //trzeba tylko raz go narysowac
+        gfx.drawImage(img, 0, 0, null);
+    }//GEN-LAST:event_menuDimActionPerformed
+
+    private void menuCorrBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCorrBActionPerformed
+
+        int blue = 0;
+        int green = 0;
+        int red = 0;
+        int alpha = 0;
+        int color = 0;
+        
+        for( int i = 0; i < img.getHeight()-1; i++ )
+            for( int j = 0; j < img.getWidth()-1; j++ ){
+                color = img.getRGB(i, j); // dostajemy kolor w postaci 32 bitowej liczby ze znakiem
+                // pierwsze 8 bitow to B, kolejne G itd.
+                // bierzemy poszczegolne kolory
+                blue = color & 0xff;
+                green = (color & 0xff00) >> 8;
+                red = (color & 0xff0000) >> 16;
+                alpha = (color & 0xff000000) >>> 24; // >>> ze wzgledu na znak ?? #stackoverflow
+                // tutaj robimy operacje na kolorach
+                red = 0;
+                green = 0;
+                color = blue | green << 8 | red << 16 | alpha << 24; // skladamy kolor do kupy
+                img.setRGB(i, j, color);
+            }
+        //bRefreshing = true;
+        //trzeba tylko raz go narysowac
+        gfx.drawImage(img, 0, 0, null);
+    }//GEN-LAST:event_menuCorrBActionPerformed
+
+    private void menuCorrRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCorrRActionPerformed
+          int blue = 0;
+        int green = 0;
+        int red = 0;
+        int alpha = 0;
+        int color = 0;
+        
+        for( int i = 0; i < img.getHeight()-1; i++ )
+            for( int j = 0; j < img.getWidth()-1; j++ ){
+                color = img.getRGB(i, j); // dostajemy kolor w postaci 32 bitowej liczby ze znakiem
+                // pierwsze 8 bitow to B, kolejne G itd.
+                // bierzemy poszczegolne kolory
+                blue = color & 0xff;
+                green = (color & 0xff00) >> 8;
+                red = (color & 0xff0000) >> 16;
+                alpha = (color & 0xff000000) >>> 24; // >>> ze wzgledu na znak ?? #stackoverflow
+                // tutaj robimy operacje na kolorach
+                blue = 0;
+                green = 0;
+                color = blue | green << 8 | red << 16 | alpha << 24; // skladamy kolor do kupy
+                img.setRGB(i, j, color);
+            }
+        //bRefreshing = true;
+        //trzeba tylko raz go narysowac
+        gfx.drawImage(img, 0, 0, null);
+    }//GEN-LAST:event_menuCorrRActionPerformed
+
+    private void menuCorrGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCorrGActionPerformed
+          int blue = 0;
+        int green = 0;
+        int red = 0;
+        int alpha = 0;
+        int color = 0;
+//        Color curColor;
+//        Color currentColor=gfx.getColor();
+//        Color change = JColorChooser.showDialog(null, "Wybór koloru Ołówka", currentColor);
+//        gfx.setColor(change);
+        
+        for( int i = 0; i < img.getHeight()-1; i++ )
+            for( int j = 0; j < img.getWidth()-1; j++ ){
+                color = img.getRGB(i, j); // dostajemy kolor w postaci 32 bitowej liczby ze znakiem
+                // pierwsze 8 bitow to B, kolejne G itd.
+                // bierzemy poszczegolne kolory
+                blue = color & 0xff;
+                green = (color & 0xff00) >> 8;
+                red = (color & 0xff0000) >> 16;
+                alpha = (color & 0xff000000) >>> 24; // >>> ze wzgledu na znak ?? #stackoverflow
+                // tutaj robimy operacje na kolorach
+                //Color change = JColorChooser.showDialog(null, "Wybór koloru ", curColor);
+                red = 0;
+                blue = 0;
+                color = blue | green << 8 | red << 16 | alpha << 24; // skladamy kolor
+                img.setRGB(i, j, color);
+            }
+        //bRefreshing = true;
+        //trzeba tylko raz go narysowac
+        gfx.drawImage(img, 0, 0, null);
+    }//GEN-LAST:event_menuCorrGActionPerformed
     //koniec litanii
 
     /**
@@ -557,7 +711,6 @@ public class NewJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JColorChooser colorChooser;
     private javax.swing.JFileChooser fileOpenChooser;
-    private javax.swing.JFileChooser fileSaveChooser;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu5;
@@ -566,16 +719,18 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuAbout;
     private javax.swing.JMenuItem menuBlur;
     private javax.swing.JMenuItem menuClearAll;
-    private javax.swing.JMenuItem menuColorCorrection;
+    private javax.swing.JMenuItem menuCorrB;
+    private javax.swing.JMenuItem menuCorrG;
+    private javax.swing.JMenuItem menuCorrR;
+    private javax.swing.JMenuItem menuDim;
     private javax.swing.JMenuItem menuExit;
-    private javax.swing.JMenuItem menuHueSaturation;
+    private javax.swing.JMenuItem menuLighten;
     private javax.swing.JMenuItem menuOpen;
     private javax.swing.JMenuItem menuPencil;
     private javax.swing.JMenuItem menuPickColor;
     private javax.swing.JMenuItem menuRotateClockwise;
     private javax.swing.JMenuItem menuRotateCounterClockwise;
     private javax.swing.JMenuItem menuSave;
-    private javax.swing.JMenuItem menuSaveAs;
     private javax.swing.JMenuItem menuSharpen;
     // End of variables declaration//GEN-END:variables
 }

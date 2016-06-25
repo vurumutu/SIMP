@@ -21,3 +21,9 @@ public  class menuOpenFilter extends javax.swing.filechooser.FileFilter {
             return "Podstawowe typy obrazów(*.jpg,*.bmp,*.tif)";
         }
     } 
+
+
+//pobierz 3 pliki stad:
+//https://stackoverflow.com/questions/25385966/reading-tiff-file-using-jai
+//z pierwszej odpowiedzi
+//kliknij na SIMP->properties>library->add libraries i dodaj te 3 pliki
