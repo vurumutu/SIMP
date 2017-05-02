@@ -41,6 +41,8 @@ public class NewJFrame extends javax.swing.JFrame {
     BufferedImage imgOperations = new BufferedImage(100, 200,BufferedImage.TYPE_BYTE_INDEXED);
     boolean bRefreshing = true;
     boolean drawable =false;
+    Color kolorTla = Color.GRAY;
+
 
     public NewJFrame() {
         super("SIMP - Student Image Manipulation Program");
@@ -115,6 +117,11 @@ public class NewJFrame extends javax.swing.JFrame {
         menuPickColor = new javax.swing.JMenuItem();
         menuPencil = new javax.swing.JMenuItem();
         menuClearAll = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         fileOpenChooser.setDialogTitle("Wybierz obrazek");
         fileOpenChooser.setFileFilter(new menuOpenFilter());
@@ -124,6 +131,7 @@ public class NewJFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel.setName("calypanel"); // NOI18N
 
         javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
         jPanel.setLayout(jPanelLayout);
@@ -135,6 +143,8 @@ public class NewJFrame extends javax.swing.JFrame {
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 600, Short.MAX_VALUE)
         );
+
+        jMenuBar1.setName("pasek"); // NOI18N
 
         jMenu1.setText("Plik");
         jMenu1.addMenuListener(new javax.swing.event.MenuListener() {
@@ -153,6 +163,7 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        menuOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         menuOpen.setText("Otwórz");
         menuOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -161,6 +172,7 @@ public class NewJFrame extends javax.swing.JFrame {
         });
         jMenu1.add(menuOpen);
 
+        menuSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         menuSave.setText("Zapisz");
         menuSave.setActionCommand("jMenuItem3");
         menuSave.addActionListener(new java.awt.event.ActionListener() {
@@ -178,6 +190,7 @@ public class NewJFrame extends javax.swing.JFrame {
         });
         jMenu1.add(menuAbout);
 
+        menuExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         menuExit.setText("Koniec");
         menuExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -330,6 +343,61 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu5);
 
+        jMenu3.setText("Skin");
+        jMenu3.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+            public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
+            }
+            public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
+                jMenu3MenuKeyReleased(evt);
+            }
+            public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
+            }
+        });
+        jMenu3.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+                jMenu3MenuDeselected(evt);
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                jMenu3MenuSelected(evt);
+            }
+        });
+
+        jMenuItem1.setText("Black");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuItem2.setText("Yellow");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem2);
+
+        jMenuItem3.setText("Blue");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem3);
+
+        jMenuItem4.setText("Gray");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -359,8 +427,11 @@ public class NewJFrame extends javax.swing.JFrame {
                     imgWidth = img.getWidth();
                     Dimension d = new Dimension(imgWidth,imgHeight);
                     jPanel.setSize(d);
+                    jPanel.setBackground(kolorTla);
                     gfx.drawImage(img, 0, 0, null);
+                    //bRefreshing=true;
                     System.out.println("Otworzono plik: "+path);
+                    //jPanel.updateUI();
                 } 
                 catch (IOException ex) {
 
@@ -669,6 +740,58 @@ public class NewJFrame extends javax.swing.JFrame {
         //trzeba tylko raz go narysowac
         gfx.drawImage(img, 0, 0, null);
     }//GEN-LAST:event_menuCorrGActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        kolorTla=Color.BLACK;
+        jPanel.setBackground(kolorTla);
+        jPanel.updateUI();
+        bRefreshing=true;
+
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        kolorTla=Color.YELLOW;
+        jPanel.setBackground(kolorTla);
+        jPanel.updateUI();
+        bRefreshing=true;
+
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        kolorTla=Color.BLUE;
+        jPanel.setBackground(kolorTla);
+        jPanel.updateUI();
+        bRefreshing=true;
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        kolorTla=Color.GRAY;
+        jPanel.setBackground(kolorTla);
+        jPanel.updateUI();
+        bRefreshing=true;
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenu3MenuDeselected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenu3MenuDeselected
+        // TODO add your handling code here:
+                bRefreshing=false;
+
+    }//GEN-LAST:event_jMenu3MenuDeselected
+
+    private void jMenu3MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenu3MenuSelected
+        // TODO add your handling code here:
+                bRefreshing=false;
+
+    }//GEN-LAST:event_jMenu3MenuSelected
+
+    private void jMenu3MenuKeyReleased(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_jMenu3MenuKeyReleased
+        // TODO add your handling code here:
+                bRefreshing=false;
+
+    }//GEN-LAST:event_jMenu3MenuKeyReleased
     //koniec litanii
 
     /**
@@ -713,8 +836,13 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JFileChooser fileOpenChooser;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel;
     private javax.swing.JMenuItem menuAbout;
     private javax.swing.JMenuItem menuBlur;
